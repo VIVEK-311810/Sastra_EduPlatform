@@ -209,7 +209,14 @@ function broadcastToSession(sessionId, message) {
 }
 
 // Middleware
-app.use(cors());
+app.use(cors({
+  origin: [
+    'http://localhost:3000',
+    'https://sastra-eduplatform-frontend.onrender.com', // Your frontend URL
+    'https://sastra-eduplatform.onrender.com' // Alternative URL
+  ],
+  credentials: true
+} ));
 app.use(express.json());
 
 // Session middleware for OAuth2
@@ -501,6 +508,10 @@ app.use((err, req, res, next) => {
 // 404 handler
 app.use('*', (req, res) => {
   res.status(404).json({ error: 'Route not found' });
+});
+
+app.listen(PORT, '0.0.0.0', () => {
+  console.log(`Server running on port ${PORT}`);
 });
 
 // Start server with WebSocket support
